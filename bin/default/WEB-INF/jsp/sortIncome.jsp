@@ -31,19 +31,19 @@
     		</tbody>
     	</table>
     	
-    <form action="/sort/income-asc" method="post">
+    <form action="/sort/income-asc" method="get">
     	<input type="submit" value="sort income asc" />
     </form>
     
-    <form action="/sort/income-desc" method="post">
+    <form action="/sort/income-desc" method="get">
     	<input type="submit" value="sort income desc" />
     </form>
     
-    <form action="/sort/tax-asc" method="post">
+    <form action="/sort/tax-asc" method="get">
     	<input type="submit" value="sort tax asc" />
     </form>	
     	
-    <form action="/sort/tax-desc" method="post">
+    <form action="/sort/tax-desc" method="get">
     	<input type="submit" value="sort tax desc" />
     </form>
 </body>

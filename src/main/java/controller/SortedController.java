@@ -37,7 +37,7 @@ public class SortedController {
     }
     
 	
-    @PostMapping({"/sort/income-asc"})
+    @GetMapping({"/sort/income-asc"})
     public String sortIncomeAsc(Model model, 
     		@RequestParam(value="size", required=true, defaultValue="10") int size,
     		@RequestParam(value="page", required=true, defaultValue="0") int page
@@ -48,7 +48,7 @@ public class SortedController {
         return "sortIncome";
     }
     
-    @PostMapping({"/sort/income-desc"})
+    @GetMapping({"/sort/income-desc"})
     public String sortIncomeDesc(Model model, 
     		@RequestParam(value="size", required=true, defaultValue="10") int size,
     		@RequestParam(value="page", required=true, defaultValue="0") int page
@@ -59,7 +59,7 @@ public class SortedController {
         return "sortIncome";
     }
     
-    @PostMapping({"/sort/tax-desc"})
+    @GetMapping({"/sort/tax-desc"})
     public String sortTaxDesc(Model model, 
     		@RequestParam(value="size", required=true, defaultValue="10") int size,
     		@RequestParam(value="page", required=true, defaultValue="0") int page
@@ -70,7 +70,7 @@ public class SortedController {
         return "sortIncome";
     }
     
-    @PostMapping({"/sort/tax-asc"})
+    @GetMapping({"/sort/tax-asc"})
     public String sortTaxAsc(Model model, 
     		@RequestParam(value="size", required=true, defaultValue="10") int size,
     		@RequestParam(value="page", required=true, defaultValue="0") int page

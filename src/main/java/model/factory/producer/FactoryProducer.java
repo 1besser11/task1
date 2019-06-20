@@ -29,20 +29,9 @@ public class FactoryProducer {
 				return uaTaxFactory;
 			case "pl":
 				return plTaxFactory;
-				//PLTaxFactory.getInstance();
 			default:
 				throw new RuntimeException();
 		}	
 	}
 	
-	public ITaxFactory getFactory() {
-		if(last == null) {
-			initializeByDefault();
-		}
-		return last;	
-	}
-
-	private static void initializeByDefault(){
-		//last = UATaxFactory.getInstance();
-	};
 }
