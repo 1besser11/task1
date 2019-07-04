@@ -5,8 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.DataBinder;
 
+import controller.validator.BonusValidator;
+import controller.validator.MoneyGiftValidator;
+import controller.validator.PercentTaxValidator;
+import controller.validator.PrivelegeValidator;
+import controller.validator.SalaryValidator;
 import exception.TaxableNotFoundException;
+import model.taxable.Bonus;
 import model.taxable.Taxable;
 import repositories.TaxableRepository;
 
@@ -29,7 +36,14 @@ public class TaxableService implements IService<Taxable> {
 
     @Override
     public Taxable save( Taxable entity) {
+    	
     	entity.setTax(entity.calculateTaxSum());
+    	DataBinder binder = new DataBinder(entity);
+    	binder.setValidator(entity.getValidator());
+		binder.validate();
+		if(binder.getBindingResult().hasErrors()) {
+			throw new RuntimeException(binder.getBindingResult().getAllErrors().toString());
+		}
         return taxableRepository.save(entity);
     }
 

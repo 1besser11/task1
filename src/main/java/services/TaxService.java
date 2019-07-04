@@ -1,11 +1,16 @@
 package services;
 
+import static org.junit.Assert.assertFalse;
+
 import java.util.List;
 
+import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.DataBinder;
 
+import controller.validator.PercentTaxValidator;
 import exception.TaxNotFoundException;
 import model.tax.PercentTax;
 import repositories.TaxRepository;
@@ -24,6 +29,12 @@ public class TaxService implements IService<PercentTax> {
 
     @Override
     public PercentTax save( PercentTax entity) {
+    	DataBinder binder = new DataBinder(entity);
+		binder.setValidator(new PercentTaxValidator());
+		binder.validate();
+		if(binder.getBindingResult().hasErrors()) {
+			throw new RuntimeException(binder.getBindingResult().getAllErrors().toString());
+		}
         return taxRepository.save(entity);
     }
 
@@ -39,7 +50,7 @@ public class TaxService implements IService<PercentTax> {
                 .orElseThrow(() -> new TaxNotFoundException("Not found tax with country " + country));
     }
     
-    public PercentTax find(String category, String country) {
+    public PercentTax findByCategoryAndCountry(String category, String country) {
         return taxRepository.findByCategoryAndCountry(category, country)
                 .orElseThrow(() -> new TaxNotFoundException("Not found tax with country " + country + category));
     }

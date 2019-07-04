@@ -48,10 +48,13 @@ public class TestBasicOperations {
 	public void testAddRelative() {
 		Human h1 = new Human();
 		h1.setName("Nikita");
+		h1.setSurname("Gordiienko");
 		h1 = hs.save(h1);
 		Human h2 = new Human();
-		h2 = hs.save(h2);
+		h2.setSurname("Gordiienko");
 		h2.setName("Eugenia");
+		h2 = hs.save(h2);
+		
 		h2.addRelative(h1);
 		System.out.println("!!!!!!!!!! " + h1);
 		System.out.println("!!!!!!!!!! " + h2);
@@ -63,15 +66,18 @@ public class TestBasicOperations {
 	public void testMoneyGiftWithRelatives() {
 		Human h1 = new Human();
 		Human h2 = new Human();
-		PercentTax tax = taxService.save(new PercentTax("ua", 1.5, "military"));
-		PercentTax tax2 = taxService.save(new PercentTax("ua", 18, "pdfo"));
+		PercentTax tax = taxService.save(new PercentTax("name", "ua", 1.5, "military"));
+		PercentTax tax2 = taxService.save(new PercentTax("name", "ua", 18, "pdfo"));
 		System.out.println("!!!!!!!!!! " + tax);
 		ITaxFactory factory = factoryProducer
 				.getFactory("ua");
 		
 		ITaxLaw l = factory.getLaw();
-		
-		MoneyGift gift = l.taxify(new MoneyGift(h1, h2, 1000));
+		MoneyGift mg = new MoneyGift();
+		mg.setFrom(h1);
+		mg.setTo(h2);
+		mg.setIncome(1000);
+		MoneyGift gift = l.taxify(mg);
 		System.out.println("!!!!!!!!!! " + gift.calculateTaxSum());
 		assertTrue(Double.valueOf(gift.calculateTaxSum()).equals((1000 * 19.5 /100)));
 	}
@@ -80,14 +86,18 @@ public class TestBasicOperations {
 	public void testTaxNotInitiated() {
 		Human h1 = new Human();
 		Human h2 = new Human();
-		PercentTax tax = taxService.save(new PercentTax("ua", 1.5, "military"));
+		PercentTax tax = taxService.save(new PercentTax("name", "ua", 1.5, "military"));
 		
 		System.out.println("!!!!!!!!!! " + tax);
 		ITaxFactory factory = factoryProducer
 				.getFactory("ua");
 		
 		ITaxLaw l = factory.getLaw();
-		MoneyGift gift = l.taxify(new MoneyGift(h1, h2, 1000));
+		MoneyGift mg = new MoneyGift();
+		mg.setFrom(h1);
+		mg.setTo(h2);
+		mg.setIncome(1000);
+		MoneyGift gift = l.taxify(mg);
 		System.out.println("!!!!!!!!!! " + gift.calculateTaxSum());
 	}
 	
@@ -95,17 +105,23 @@ public class TestBasicOperations {
 	public void testCheckIfTaxSaved() {
 		Human h1 = new Human();
 		Human h2 = new Human();
-		PercentTax tax = taxService.save(new PercentTax("ua", 1.5, "military"));
-		PercentTax tax2 = taxService.save(new PercentTax("ua", 18, "pdfo"));
+		PercentTax tax = taxService.save(new PercentTax("name", "ua", 1.5, "military"));
+		PercentTax tax2 = taxService.save(new PercentTax("name", "ua", 18, "pdfo"));
 		System.out.println("!!!!!!!!!! " + tax);
 		ITaxFactory factory = factoryProducer
 				.getFactory("ua");
 		
 		ITaxLaw l = factory.getLaw();
-		
-		MoneyGift gift = l.taxify(new MoneyGift(h1, h2, 1000));
+		MoneyGift mg = new MoneyGift();
+		mg.setFrom(h1);
+		mg.setTo(h2);
+		mg.setIncome(1000);
+		MoneyGift gift = l.taxify(mg);
+
 		taxableService.save(gift);
 		h1.addTaxable(gift);
+		h1.setName("Niki");
+		h1.setSurname("Niki");
 		h1 = hs.save(h1);
 		
 		System.out.println("4!!!!!!!!!!!" +h1);

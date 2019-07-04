@@ -24,7 +24,7 @@ public class UATaxFactory implements ITaxFactory {
 	UATaxLaw uaTaxLaw;
 	
 	/**
-	 * Кож страны
+	 * Код страны
 	 */
 	private String country = "ua";
 	
@@ -32,9 +32,9 @@ public class UATaxFactory implements ITaxFactory {
 	public PercentTax getTax(String s) {
 		switch(s.toLowerCase()) {
 			case "military":
-				return taxService.find("military", country);
+				return taxService.findByCategoryAndCountry("military", country);
 			case "pdfo":
-				return taxService.find("pdfo", country);
+				return taxService.findByCategoryAndCountry("pdfo", country);
 			default:
 				throw new RuntimeException();
 		}
@@ -49,8 +49,8 @@ public class UATaxFactory implements ITaxFactory {
 	 * Метод для первичной инициализации налогов в стране
 	 */
 	public void initiateTaxes() {
-		taxService.save(new PercentTax("ua", 1.5, "military"));
-		taxService.save(new PercentTax("ua", 18, "pdfo"));
+		taxService.save(new PercentTax("name", "ua", 1.5, "military"));
+		taxService.save(new PercentTax("name","ua", 18, "pdfo"));
 	}
 
 }

@@ -16,17 +16,21 @@ import lombok.Data;
 @Data
 public class PercentTax implements ITax {
 	
-
-	String country;
-	String name;
-	String category;
-	double percent;
-	
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	long id;
-	
-	public PercentTax(String c, double d, String category){
+
+	String country = "";
+	String name = "";
+	String category = "";
+	double percent;
+
+    public PercentTax() {
+    	
+    }
+    
+	public PercentTax(String name, String c, double d, String category){
+		setName(name);
 		setCountry(c);
 		setPercent(d);
 		setCategory(category);

@@ -9,8 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.DataBinder;
 
+import controller.validator.HumanValidator;
+import controller.validator.PercentTaxValidator;
 import exception.HumanNotFoundException;
+import exception.ValidationException;
 import model.human.Human;
 import repositories.HumanRepository;
 
@@ -34,6 +38,12 @@ public class HumanService implements IService<Human> {
 
     @Override
     public Human save(Human entity) {
+    	DataBinder binder = new DataBinder(entity);
+		binder.setValidator(new HumanValidator());
+		binder.validate();
+		if(binder.getBindingResult().hasErrors()) {
+			throw new RuntimeException();
+		}
         return humanRepository.save(entity);
     }
 

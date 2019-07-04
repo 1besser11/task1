@@ -24,7 +24,7 @@ public class UATaxLaw implements ITaxLaw {
 
 	@Override
 	public MoneyGift taxify(MoneyGift gift) {
-		if(gift.getPrice() > 850.0 && !gift.getFrom().isRelative(gift.getTo())) {
+		if(gift.getIncome() > 850.0 && !gift.getFrom().isRelative(gift.getTo())) {
 			
 			gift.addTax(uaTaxFactory.getTax("military"));
 			gift.addTax(uaTaxFactory.getTax("pdfo"));

@@ -2,6 +2,10 @@ package model.taxable;
 
 import javax.persistence.Entity;
 
+import org.springframework.validation.Validator;
+
+import controller.validator.BonusValidator;
+import controller.validator.SalaryValidator;
 import lombok.Data;
 
 /**
@@ -17,12 +21,11 @@ public class Bonus extends Taxable {
 	String reason;
 	String company;
 	
-	public Bonus(double price, String name){
-		this.price = price;
-		this.name = name;
-	
+
+	@Override
+	public Validator getValidator() {
+		return new BonusValidator();
 	}
-	
 
 
 }

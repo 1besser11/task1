@@ -13,7 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.validation.DataBinder;
 
+import controller.validator.PercentTaxValidator;
 import model.factory.ITaxFactory;
 import model.factory.UATaxFactory;
 import model.factory.producer.FactoryProducer;
@@ -49,8 +51,13 @@ public class TestSort {
 	@Before
 	public void init() {
 
-		PercentTax tax = taxService.save(new PercentTax("ua", 1.5, "military"));
-		PercentTax tax2 = taxService.save(new PercentTax("ua", 18, "pdfo"));
+		PercentTax tax = new PercentTax("name", "ua", 1.5, "military");
+		
+		PercentTax tax2 = new PercentTax("name", "ua", 18, "pdfo");
+		
+
+		taxService.save(tax);
+		taxService.save(tax2);
 		
 		ITaxFactory factory = factoryProducer
 				.getFactory("ua");
@@ -63,10 +70,10 @@ public class TestSort {
     	
     	Human h2 = new Human();
     	h2.setName("Eugenia");
-    	
+    	h2.setSurname("default");
     	Human h3 = new Human();
     	h3.setName("Larysa");
-    	
+    	h3.setSurname("dEFF");
     	h1.addRelative(h3);
     	h1.addRelative(h2);
 
@@ -75,22 +82,32 @@ public class TestSort {
     	hs.save(h3);
     	
     	
-    	Bonus b = new Bonus(100, "good worker");
+    	Bonus b = new Bonus();
+    	b.setIncome(100);
+    	b.setName("good worker");
+    	b.setReason("bonus");
+    	b.setCompany("company");
     	Salary s1 = new Salary();
-    	s1.setPrice(3000);
+    	s1.setIncome(3000);
     	s1.setCompany("Some company");
+    	s1.setOccupation("some");
     	
     	Salary s2 = new Salary();
-    	s2.setPrice(5000);
+    	s2.setIncome(5000);
     	s2.setCompany("Some company 2");
-    	
+    	s2.setOccupation("some");
     	Salary s3 = new Salary();
-    	s3.setPrice(3000);
+    	s3.setIncome(3000);
     	s3.setCompany("Some company 3");
-    	
-    	Privelege p = new Privelege(500, "good parent");
-    	
-    	MoneyGift gift = new MoneyGift(h2, h1, 900);
+    	s3.setOccupation("some");
+    	Privelege p = new Privelege();
+    	p.setIncome(100);
+    	p.setName("good worker");
+    	p.setReason("bonus");
+    	MoneyGift gift = new MoneyGift();
+    	gift.setFrom(h2);
+    	gift.setTo(h1);
+    	gift.setIncome(900);
     	
 		b = (Bonus) taxableService.save(l.taxify(b));
 		s1 = (Salary) taxableService.save(l.taxify(s1));
@@ -100,16 +117,7 @@ public class TestSort {
 		
 		s3 = (Salary) taxableService.save(l.taxify(s3));
 		p = (Privelege) taxableService.save(l.taxify(p));
-		
-		taxableService.save(b);
-		taxableService.save(s1);
-		taxableService.save(gift);
-		
-		taxableService.save(s2);
-		
-		taxableService.save(s3);
-		taxableService.save(p);
-		
+
 
     	h1.addTaxable(b);
     	h1.addTaxable(s1);

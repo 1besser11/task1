@@ -3,6 +3,10 @@ package model.taxable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import org.springframework.validation.Validator;
+
+import controller.validator.MoneyGiftValidator;
+import controller.validator.SalaryValidator;
 import lombok.Data;
 import lombok.ToString;
 import model.human.Human;
@@ -23,15 +27,12 @@ public class MoneyGift extends Taxable implements IGiveable {
 	@ToString.Exclude
 	@ManyToOne
 	private Human to;
+
 	
-	public MoneyGift(double p){
-		setPrice(p);
+	@Override
+	public Validator getValidator() {
+		return new MoneyGiftValidator();
 	}
-	
-	public MoneyGift(Human from, Human to, double price){
-		this.price = price;
-		this.from = from;
-		this.to = to;
-	}
+
 
 }
